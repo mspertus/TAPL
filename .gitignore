@@ -1,0 +1,23 @@
+
+*.annot
+*.cmo
+*.cma
+*.cmi
+*.a
+*.o
+*.cmx
+*.cmxs
+*.cmxa
+
+_build/
+
+*.byte
+*.native
+
+.merlin
+
+# Dune generated files
+*.install
+
+# Local OPAM switch
+_opam/

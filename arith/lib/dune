@@ -1,0 +1,4 @@
+(library
+ (name arith))
+(ocamllex lexer)
+(ocamlyacc parser)
