@@ -3,7 +3,7 @@ Modify implementations for Pierce' Types and Programming Languages to be usable 
 and reorganize them as Dune projects.
 
 There is one directory for each implementation at https://www.cis.upenn.edu/~bcpierce/tapl/.
-(So far there is only `arith`). 
+(So far there is only `arith` and `fulluntyped`). 
 
 ## Usage
 Go into the directory for the implementation (e.g., `arith`) and build
@@ -24,6 +24,23 @@ Parse Error
 false
 > iszero(pred(pred(2)));
 true
+> ^D
+$
+```
+Here's an example for `fulluntyped`, the full untyped lambda calculus
+```
+$ dune build . --profile release
+$ dune exec fulluntyped repl --profile release
+> "hello";
+"hello"
+> x/;
+x
+> x;
+x
+> if false then true else false;
+false
+> (lambda x. x) (lambda x. x x);
+(lambda x'. x' x')
 > ^D
 $
 ```
