@@ -1,0 +1,4 @@
+(library
+ (name fulluntyped))
+(ocamllex lexer)
+(ocamlyacc parser)
