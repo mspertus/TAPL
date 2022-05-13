@@ -6,6 +6,7 @@
 *)
 
 open Format
+open String
 open Arith.Support.Pervasive
 open Arith.Support.Error
 open Arith.Syntax
@@ -53,8 +54,37 @@ in
 
 let alreadyImported = ref ([] : string list)
 
+let rec read_til_semi () = 
+  print_string "> ";
+  print_flush();
+  let line = read_line() in
+    if ends_with ~suffix:";" line then
+      line
+    else
+      read_til_semi() ^ line
+
+let parseString str =
+  let lexbuf = Lexer.createFromStr str
+  in let result =
+    try Parser.toplevel Lexer.main lexbuf with Parsing.Parse_error -> 
+      print_endline "Parse Error"; print_flush(); []
+in
+  Parsing.clear_parser(); result
+      
 let rec process_file f  =
-  if List.mem f (!alreadyImported) then
+  if (f = "repl") then
+    try (
+    let text = read_til_semi() in
+    let cmds = parseString text in
+    let g  c =  
+      open_hvbox 0;
+      process_command  c;
+      print_flush();
+    in
+      List.iter g  cmds;
+      process_file "repl";
+      () ) with End_of_file -> print_endline ""; ()   
+  else if List.mem f (!alreadyImported) then
     ()
   else (
     alreadyImported := f :: !alreadyImported;
