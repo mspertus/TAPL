@@ -27,3 +27,20 @@ true
 > ^D
 $
 ```
+Here's an example for `fulluntyped`, the full untyped lambda calculus
+```
+$ dune build . --profile release
+$ dune exec fulluntyped repl --profile release
+> "hello";
+"hello"
+> x/;
+x
+> x;
+x
+> if false then true else false;
+false
+> (lambda x. x) (lambda x. x x);
+(lambda x'. x' x')
+> ^D
+$
+```
