@@ -3,7 +3,7 @@ Modify implementations for Pierce' Types and Programming Languages to be usable 
 and reorganize them as Dune projects.
 
 There is one directory for each implementation at https://www.cis.upenn.edu/~bcpierce/tapl/.
-(So far there is only `arith`). 
+(So far there is only `arith` and `fulluntyped`). 
 
 ## Usage
 Go into the directory for the implementation (e.g., `arith`) and build
