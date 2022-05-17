@@ -52,8 +52,6 @@ let parseFile inFile =
 in
   Parsing.clear_parser(); close_in pi; result
 
-let alreadyImported = ref ([] : string list)
-
 let rec read_til_semi () = 
   print_string "> ";
   print_flush();
@@ -70,7 +68,9 @@ let parseString str =
       print_endline "Parse Error"; print_flush(); []
 in
   Parsing.clear_parser(); result
-      
+ 
+let alreadyImported = ref ([] : string list)
+
 let rec process_file f  =
   if (f = "repl") then
     try (
