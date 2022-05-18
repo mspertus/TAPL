@@ -1,0 +1,11 @@
+tru = lambda t. lambda f. t;
+fls = lambda t. lambda f. t;
+test = lambda l. lambda m. lambda n. l m n;
+and = lambda b. lambda c. b c fls;
+pair = lambda f. lambda s. lambda b. b f s;
+fst = lambda p. p tru;
+snd = lambda p. p fls;
+c0 = lambda s. lambda z. z;
+c1 = lambda s. lambda z. s z;
+c2 = lambda s. lambda z. s (s z);
+scc = lambda n. lambda s. lambda z. s (n s z);
