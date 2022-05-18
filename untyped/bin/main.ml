@@ -6,6 +6,7 @@
 *)
 
 open Format
+open String
 open Untyped.Support.Pervasive
 open Untyped.Support.Error
 open Untyped.Syntax
@@ -51,10 +52,38 @@ let parseFile inFile =
 in
   Parsing.clear_parser(); close_in pi; result
 
+let rec read_til_semi () = 
+  print_string "> ";
+  print_flush();
+  let line = read_line() in
+    if ends_with ~suffix:";" line then
+      line
+    else
+      read_til_semi() ^ line
+
+let parseString str =
+  let lexbuf = Lexer.createFromStr str
+  in let result =
+    try Parser.toplevel Lexer.main lexbuf with Parsing.Parse_error -> 
+      print_endline "Parse Error"; print_flush(); fun ctx -> ([], ctx)
+in
+  Parsing.clear_parser(); result
 let alreadyImported = ref ([] : string list)
 
 let rec process_file f ctx =
-  if List.mem f (!alreadyImported) then
+  if (f = "repl") then
+    try (
+      let text = read_til_semi() in
+      let cmds,_ = parseString text ctx in
+      let h ctx c =  
+        open_hvbox 0;
+        let results = process_command  ctx c in
+        print_flush();
+        results
+      in
+        process_file "repl" (List.fold_left h ctx cmds)) 
+      with End_of_file -> print_endline ""; ctx   
+  else if List.mem f (!alreadyImported) then
     ctx
   else (
     alreadyImported := f :: !alreadyImported;
