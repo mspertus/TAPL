@@ -33,10 +33,14 @@ $ dune build . --profile release
 $ dune exec fulluntyped repl --profile release
 > "hello";
 "hello"
-> x/;
+> import "test.f"
+> import "test.f";
+"hello"
 x
-> x;
 x
+true
+/* Snip */
+120.
 > if false then true else false;
 false
 > (lambda x. x) (lambda x. x x);
