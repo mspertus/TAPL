@@ -33,18 +33,32 @@ $ dune build . --profile release
 $ dune exec fulluntyped repl --profile release
 > "hello";
 "hello"
-> import "test.f"
-> import "test.f";
-"hello"
-x
-x
-true
-/* Snip */
-120.
 > if false then true else false;
 false
 > (lambda x. x) (lambda x. x x);
 (lambda x'. x' x')
 > ^D
 $
+```
+Some of the implementations are supplemented with files containing useful definitions from the textbook. For example `fulluntyped/church.f` contains implementations related to Church booleans and numerals.
+```
+$ dune exec fulluntyped repl --profile release
+> import "church.f";
+tru = lambda t. lambda f. t
+fls = lambda t. lambda f. f
+test = lambda l. lambda m. lambda n. l m n
+and = lambda b. lambda c. b c fls
+pair = lambda f. lambda s. lambda b. b f s
+fst = lambda p. p tru
+snd = lambda p. p fls
+c0 = lambda s. lambda z. z
+c1 = lambda s. lambda z. s z
+c2 = lambda s. lambda z. s (s z)
+scc = lambda n. lambda s. lambda z. s (n s z)
+> scc c0;
+(lambda s. lambda z. s ((lambda s'. lambda z'.z') s z))
+> scc c0 fst (pair 1 2);
+1
+> scc c0 snd (pair 1 2);
+2
 ```
