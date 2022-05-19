@@ -1,5 +1,5 @@
 tru = lambda t. lambda f. t;
-fls = lambda t. lambda f. t;
+fls = lambda t. lambda f. f;
 test = lambda l. lambda m. lambda n. l m n;
 and = lambda b. lambda c. b c fls;
 pair = lambda f. lambda s. lambda b. b f s;
@@ -9,3 +9,9 @@ c0 = lambda s. lambda z. z;
 c1 = lambda s. lambda z. s z;
 c2 = lambda s. lambda z. s (s z);
 scc = lambda n. lambda s. lambda z. s (n s z);
+plus = lambda m. lambda n. lambda s. lambda z. m s (n s z);
+times = lambda m. lambda n. m (plus n) c0;
+iszro = lambda m. m (lambda x. fls) tru;
+zz = pair c0 c0;
+ss = lambda p. pair (snd p) (plus c1 (snd p));
+prd = lambda m. fst (m ss zz);
