@@ -15,3 +15,16 @@ iszro = lambda m. m (lambda x. fls) tru;
 zz = pair c0 c0;
 ss = lambda p. pair (snd p) (plus c1 (snd p));
 prd = lambda m. fst (m ss zz);
+
+/* Exercise 5.2.5 */
+minus = lambda m. lambda n. n prd m;
+
+/* Exercise 5.2.7 */
+equal = lambda m. lambda n. and (iszro (minus m n)) (iszro (minus n m));
+
+realbool = lambda b. b true false;
+churchbool = lambda b. if b then tru else false;
+realnat = lambda m. m (lambda x. succ x) 0;
+realeq = lambda m. lambda n. (equal m n) true false;
+
+
