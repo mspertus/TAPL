@@ -52,14 +52,14 @@ let parseFile inFile =
 in
   Parsing.clear_parser(); close_in pi; result
 
-  let rec read_til_semi () = 
-    print_string "> ";
+  let rec read_til_semi ?(prompt = " > ") () = 
+    print_string prompt;
     print_flush();
     let line = read_line() in
       if ends_with ~suffix:";" line then
         line
       else
-        read_til_semi() ^ line
+        line ^ (read_til_semi ~prompt: "+> " ())
   
   let parseString str =
     let lexbuf = Lexer.createFromStr str
