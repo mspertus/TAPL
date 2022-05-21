@@ -27,4 +27,13 @@ churchbool = lambda b. if b then tru else false;
 realnat = lambda m. m (lambda x. succ x) 0;
 realeq = lambda m. lambda n. (equal m n) true false;
 
+/* Uncommenting divergent combinator omega results in stack overflow (as expected) */
+/* omega = (lambda x. x x) (lambda x. x x); */
+fix = lambda f. (lambda x. f (lambda y. x x y)) (lambda x. f (lambda y. x x y));
 
+/* Factorial example in section 5.2.9 */
+g = lambda fct. lambda n. if realeq n c0 
+  then c1
+  else (times n (fct (prd n)));
+
+factorial = fix g;
