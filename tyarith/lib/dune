@@ -1,0 +1,4 @@
+(library
+ (name tyarith))
+(ocamllex lexer)
+(ocamlyacc parser)
