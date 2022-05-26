@@ -6,6 +6,7 @@
 *)
 
 open Format
+open String
 open Tyarith.Support.Pervasive
 open Tyarith.Support.Error
 open Tyarith.Syntax
@@ -42,6 +43,24 @@ let openfile infile =
             with Sys_error m -> trynext rest
   in trynext !searchpath
 
+
+let rec read_til_semi ?(prompt = " > ") () = 
+  print_string prompt;
+  print_flush();
+  let line = read_line() in
+    if ends_with ~suffix:";" line then
+      line
+    else
+      line ^ (read_til_semi ~prompt: "+> " ())
+
+let parseString str =
+  let lexbuf = Lexer.createFromStr str
+  in let result =
+    try Parser.toplevel Lexer.main lexbuf with Parsing.Parse_error -> 
+      print_endline "Parse Error"; print_flush(); []
+in
+  Parsing.clear_parser(); result
+  
 let parseFile inFile =
   let pi = openfile inFile
   in let lexbuf = Lexer.create inFile pi
@@ -54,7 +73,20 @@ in
 let alreadyImported = ref ([] : string list)
 
 let rec process_file f  =
-  if List.mem f (!alreadyImported) then
+if (f = "repl") then
+  try (
+  let text = read_til_semi() in
+  let cmds = parseString text in
+  let g  c =  
+    open_hvbox 0;
+    process_command  c;
+    print_flush();
+  in
+    List.iter g  cmds;
+    process_file "repl";
+    () ) with End_of_file -> print_endline ""; ()
+    | _ -> process_file "repl";
+else   if List.mem f (!alreadyImported) then
     ()
   else (
     alreadyImported := f :: !alreadyImported;
