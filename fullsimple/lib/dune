@@ -1,0 +1,4 @@
+(library
+ (name fullsimple))
+(ocamllex lexer)
+(ocamlyacc parser)

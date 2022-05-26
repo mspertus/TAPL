@@ -1,0 +1,4 @@
+(executable
+ (public_name fullsimple)
+ (name main)
+ (libraries fullsimple))
