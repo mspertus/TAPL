@@ -2,8 +2,8 @@
 Modify implementations for Pierce' Types and Programming Languages to be usable in a REPL
 and reorganize them as Dune projects.
 
-There is one directory for each implementation at https://www.cis.upenn.edu/~bcpierce/tapl/.
-(So far there is only `arith`, `untyped`, and `fulluntyped`). 
+There will eventually be one directory for each implementation at https://www.cis.upenn.edu/~bcpierce/tapl/
+(right now there are only several).
 
 ## Usage
 Go into the directory for the implementation (e.g., `arith`) and build
