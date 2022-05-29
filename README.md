@@ -96,3 +96,10 @@ This change only needs to be made in `main.ml`.
 Some imports will be local, now from `lib`. These should have `Name.` prepended to the imports.
 For example, `open Support` should be changed to `open Name.Support`. 
 
+### Enjoy
+Build and test to confirm everything is good to go
+
+```  
+dune build . --profile release
+dune exec name test.f
+```
