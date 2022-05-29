@@ -1,0 +1,4 @@
+(executable
+ (public_name letexercise)
+ (name main)
+ (libraries letexercise))

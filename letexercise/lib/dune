@@ -1,0 +1,4 @@
+(library
+ (name letexercise))
+(ocamllex lexer)
+(ocamlyacc parser)
