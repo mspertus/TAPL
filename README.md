@@ -76,13 +76,15 @@ like `fullsimple`, and `Name` denotes the implementation name with leading capit
 ```dune init project name```
 
 ### Move the `.ml` files from their original location to the new project
-```mv orig/main.ml NAME/bin/
+```
+mv orig/main.ml NAME/bin/
 mv orig/*.ml* name/lib/
 mv test.f name
 ```
 ### Tell dune about the lexer and parser
 Add the following lines to the bottom of `name/lib/dune`
-```(ocamllex lexer)
+```
+(ocamllex lexer)
 (ocamlyacc parser)
 ```
 Add the following lines to `name/bin/main.ml` below the imports
