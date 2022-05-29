@@ -62,3 +62,37 @@ scc = lambda n. lambda s. lambda z. s (n s z)
 > scc c0 snd (pair 1 2);
 2
 ```
+
+## Turning an implementation into a dune project
+In case it is useful, here are the steps due to Jordan Merrick (thanks!) that
+I follow to change the implementations on the book website to Dune projects (this
+does not include any semantic changes like adding a REPL.
+
+**Note:** Due to Ocaml's casing conventions, in the below, `name` denotes the implementation name,
+like `fullsimple`, and `Name` denotes the implementation name with leading capitalization, like
+`Fullsimple`.
+
+### Create a dune project
+```dune init project name```
+
+### Move the `.ml` files from their original location to the new project
+```mv orig/main.ml NAME/bin/
+mv orig/*.ml* name/lib/
+mv test.f name
+```
+### Tell dune about the lexer and parser
+Add the following lines to the bottom of `name/lib/dune`
+```(ocamllex lexer)
+(ocamlyacc parser)
+```
+Add the following lines to `name/bin/main.ml` below the imports
+``` ocaml
+module Lexer = Name.Lexer
+module Parser = Name.Parser
+```
+
+### Adjust the imports in main.ml
+This change only needs to be made in `main.ml`.
+Some imports will be local, now from `lib`. These should have `Name.` prepended to the imports.
+For example, `open Support` should be changed to `open Name.Support`. 
+
