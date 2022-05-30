@@ -1,5 +1,6 @@
 # TAPL
-Modify implementations for Pierce' Types and Programming Languages to be usable in a REPL
+Modify implementations for Pierce' [Types and Programming Languages](https://www.cis.upenn.edu/~bcpierce/tapl/)
+to be usable in a REPL
 and reorganize them as Dune projects.
 
 There will eventually be one directory for each implementation at https://www.cis.upenn.edu/~bcpierce/tapl/
@@ -103,5 +104,6 @@ Build and test to confirm everything is good to go
 
 ```  
 dune build . --profile release
-dune exec name test.f
+dune exec name test.f --profile release
+dune exec name repl --profile release
 ```
