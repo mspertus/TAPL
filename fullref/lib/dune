@@ -1,0 +1,4 @@
+(library
+ (name fullref))
+(ocamllex lexer)
+(ocamlyacc parser)

@@ -1,0 +1,4 @@
+(executable
+ (public_name fullref)
+ (name main)
+ (libraries fullref))
