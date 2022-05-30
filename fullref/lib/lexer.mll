@@ -102,6 +102,9 @@ let lineno   = ref 1
 and depth    = ref 0
 and start    = ref 0
 
+let createFromStr str =
+  lineno := 1; start := 0; Lexing.from_string str
+
 and filename = ref ""
 and startLex = ref dummyinfo
 
