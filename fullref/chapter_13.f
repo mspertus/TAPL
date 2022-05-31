@@ -49,6 +49,6 @@ update = lambda a:NatArray. lambda m:Nat. lambda v:Nat.
 
 arr = newarray unit;
 update arr 3 5;
-arr 2;
-arr 3;
+!arr 2;
+!arr 3;
 
