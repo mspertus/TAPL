@@ -105,5 +105,4 @@ Build and test to confirm everything is good to go
 ```  
 dune build . --profile release
 dune exec name test.f --profile release
-dune exec name repl --profile release
 ```
