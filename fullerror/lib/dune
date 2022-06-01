@@ -1,0 +1,4 @@
+(library
+ (name fullerror))
+(ocamllex lexer)
+(ocamlyacc parser)
