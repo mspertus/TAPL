@@ -1,0 +1,4 @@
+(library
+ (name rcdsub))
+(ocamllex lexer)
+(ocamlyacc parser)
