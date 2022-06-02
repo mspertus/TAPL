@@ -65,7 +65,8 @@ scc = lambda n. lambda s. lambda z. s (n s z)
 ```
 
 ## Turning an implementation into a dune project
-In case it is useful, here are the steps due to Jordan Merrick (thanks!) that
+**Warning: This section can safely be ignored. I have already performed these steps in the repo.**
+However, in case it is useful as a reference, here are the steps due to Jordan Merrick (thanks!) that
 I follow to change the implementations on the book website to Dune projects (this
 does not include any semantic changes like adding a REPL.
 
