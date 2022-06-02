@@ -1,0 +1,4 @@
+(executable
+ (public_name fullsub)
+ (name main)
+ (libraries fullsub))
