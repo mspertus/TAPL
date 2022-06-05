@@ -5,6 +5,7 @@ Rxy = {x: Nat, y: Nat};
 xy = {x=0, y=1};
 f xy;
 
+/* Examples based on 15.3, Ascription and Casting */
 xy as Rx;
 /* Uncomment the following line to see it is a type error */
 /* {x = 0} as Rxy; */
