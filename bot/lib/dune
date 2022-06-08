@@ -1,0 +1,4 @@
+(library
+ (name bot))
+(ocamllex lexer)
+(ocamlyacc parser)
