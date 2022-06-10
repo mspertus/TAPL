@@ -99,13 +99,7 @@ let rec process_file f (ctx,store) =
     try (
     let text = read_til_semi() in
     let cmds,_ = parseString text ctx in
-    let g (ctx, store) c =  
-      open_hvbox 0;
-      let results = process_command (ctx,store) c in
-      print_flush();
-      results
-    in
-      process_file "repl" (List.fold_left g (ctx,store) cmds))
+      process_file "repl" (List.fold_left process_cmds (ctx,store) cmds))
       with End_of_file -> print_endline ""; (ctx, store)
       | _ -> process_file "repl" (ctx, store);
   else if List.mem f (!alreadyImported) then
@@ -113,13 +107,13 @@ let rec process_file f (ctx,store) =
   else (
     alreadyImported := f :: !alreadyImported;
     let cmds,_ = parseFile f ctx in
-    let g (ctx,store) c =  
-      open_hvbox 0;
-      let results = process_command (ctx,store) c in
-      print_flush();
-      results
-    in
-      List.fold_left g (ctx,store) cmds)
+      List.fold_left process_cmds (ctx,store) cmds)
+
+and process_cmds (ctx, store) c =  
+  open_hvbox 0;
+  let results = process_command (ctx,store) c in
+  print_flush();
+  results
 
 and process_command (ctx,store) cmd = match cmd with
     Import(f) -> 

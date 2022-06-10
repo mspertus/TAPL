@@ -76,12 +76,7 @@ let rec process_file f  =
     try (
     let text = read_til_semi() in
     let cmds = parseString text in
-    let g  c =  
-      open_hvbox 0;
-      process_command  c;
-      print_flush();
-    in
-      List.iter g  cmds;
+      List.iter process_cmds cmds;
       process_file "repl";
       () ) with End_of_file -> print_endline ""; ()   
   else if List.mem f (!alreadyImported) then
@@ -89,13 +84,13 @@ let rec process_file f  =
   else (
     alreadyImported := f :: !alreadyImported;
     let cmds = parseFile f in
-    let g  c =  
-      open_hvbox 0;
-      let results = process_command  c in
-      print_flush();
-      results
-    in
-      List.iter g  cmds)
+      List.iter process_cmds  cmds)
+
+
+and process_cmds  c =  
+  open_hvbox 0;
+  process_command  c;
+  print_flush();
 
 and process_command  cmd = match cmd with
     Import(f) -> 
@@ -105,7 +100,8 @@ and process_command  cmd = match cmd with
       printtm_ATerm true t'; 
       force_newline();
       ()
-  
+
+
 let main () = 
   let inFile = parseArgs() in
   let _ = process_file inFile  in

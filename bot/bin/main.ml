@@ -95,7 +95,6 @@ and process_cmds ctx c =
   let results = process_command ctx c in
   print_flush();
   results
-
 and process_command ctx cmd = match cmd with
     Import(f) -> 
       process_file f ctx
@@ -111,7 +110,8 @@ and process_command ctx cmd = match cmd with
   | Bind(fi,x,bind) -> 
       pr x; pr " "; prbindingty ctx bind; force_newline();
       addbinding ctx x bind
-  
+ 
+
 let main () = 
   let inFile = parseArgs() in
   let _ = process_file inFile emptycontext in
