@@ -50,3 +50,41 @@ resetCounterClass =
 
 newResetCounter =
   lambda _:Unit. let r = {x=ref 1} in resetCounterClass r;
+
+/* 18.7 Adding instance variables */
+BackupCounter = {get:Unit->Nat, inc:Unit->Unit,
+  reset:Unit->Unit, backup:Unit->Unit};
+
+BackupCounterRep = {x: Ref Nat, b: Ref Nat};
+
+backupCounterClass =
+  lambda r:BackupCounterRep.
+    let super = resetCounterClass r in
+      {get = super.get,
+       inc = super.inc,
+       reset = lambda _:Unit. r.x:=!(r.b),
+       backup = lambda _:Unit. r.b:=!(r.x)};
+
+/* 18.8 Calling Superclass Methods */
+funnyBackupCounterClass =
+  lambda r:BackupCounterRep.
+    let super = backupCounterClass r in
+      {get = super.get,
+       inc = lambda _:Unit. (super.backup unit; super.inc unit),
+       reset = super.reset,
+       backup = super.backup};
+
+/* 18.9 Classes with Self */
+SetCounter = {get:Unit->Nat, set:Nat->Unit, inc:Unit->Unit};
+
+setCounterClass =
+  lambda r:CounterRep.
+    fix
+      (lambda self: SetCounter.
+        {get = lambda _:Unit. !(r.x),
+         set = lambda i:Nat. r.x:=i,
+         inc = lambda _:Unit. self.set (succ (self.get unit))});
+
+newSetCounter =
+  lambda _:Unit. let r = {x=ref 1} in
+    setCounterClass r;
