@@ -156,3 +156,65 @@ ic = newInstrCounter unit;
 (ic.set 5; ic.accesses unit);
 (ic.inc unit; ic.get unit);
 ic.accesses unit;
+
+/* 18.12 A More Efficient Implementation */
+setCounterClass =
+    lambda r:CounterRep. lambda self: Ref SetCounter.
+        {get = lambda _:Unit. !(r.x),
+         set = lambda i:Nat. r.x:= i,
+         inc = lambda _:Unit. (!self).set (succ ((!self).get unit))};
+
+dummySetCounter =
+    {get = lambda _:Unit. 0,
+     set = lambda i:Nat. unit,
+     inc = lambda _:Unit. unit};
+
+newSetCounter =
+    lambda _:Unit.
+        let r = {x=ref 1} in
+        let cAux = ref dummySetCounter in
+        (cAux := (setCounterClass r cAux); !cAux);
+
+/* Uncomment this to see how this approach can run into type mismatches */
+/*
+instrCounterClass =
+    lambda r:InstrCounterRep. lambda self: Ref InstrCounter.
+    let super = setCounterClass r self in
+    {get = super.get,
+     set = lambda i:Nat. (r.a:=succ(!(r.a)); super.set i),
+     inc = super.inc,
+     accesses = lambda _:Unit. !(r.a)};
+*/
+
+/* Regain covariance by using Source to indicate the class only reads from 
+   the method pointer*/
+setCounterClass =
+    lambda r:CounterRep. lambda self: Source SetCounter.
+        {get = lambda _:Unit. !(r.x),
+         set = lambda i:Nat. r.x:=i,
+         inc = lambda _:Unit. (!self).set (succ ((!self).get unit))};
+
+instrCounterClass =
+    lambda r:InstrCounterRep. lambda self: Source InstrCounter.
+    let super = setCounterClass r self in
+    {get = super.get,
+     set = lambda i:Nat. (r.a:=succ(!(r.a)); super.set i),
+     inc = super.inc,
+     accesses = lambda _:Unit. !(r.a)};
+
+dummyInstrCounter =
+    {get = lambda _:Unit. 0,
+     set = lambda i:Nat. unit,
+     inc = lambda _:Unit. unit,
+     accesses = lambda _:Unit. 0};
+
+newInstrCounter =
+    lambda _:Unit.
+        let r = {x=ref 1, a=ref 0} in
+        let cAux = ref dummyInstrCounter in
+        (cAux := (instrCounterClass r cAux); !cAux);
+
+ic = newInstrCounter unit;
+(ic.set 5; ic.accesses unit);
+(ic.inc unit; ic.get unit);
+ic.accesses unit;
