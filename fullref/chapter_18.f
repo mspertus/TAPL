@@ -88,3 +88,71 @@ setCounterClass =
 newSetCounter =
   lambda _:Unit. let r = {x=ref 1} in
     setCounterClass r;
+
+/* 18.10 Open Recursion through Self */
+setCounterClass =
+  lambda r:CounterRep.
+    lambda self: SetCounter.
+      { get = lambda _:Unit. !(r.x),
+        set = lambda i:Nat. r.x:=i,
+        inc = lambda _:Unit. self.set (succ(self.get unit))};
+
+newSetCounter =
+  lambda _:Unit. let r = {x=ref 1} in
+    fix (setCounterClass r);
+
+InstrCounter = {get:Unit->Nat, set:Nat->Unit,
+  inc:Unit->Unit, accesses:Unit->Nat};
+
+InstrCounterRep = {x:Ref Nat, a: Ref Nat};
+
+instrCounterClass = 
+  lambda r:InstrCounterRep.
+    lambda self: InstrCounter.
+      let super = setCounterClass r self in  
+        {get = super.get,
+         set = lambda i:Nat. (r.a:= succ(!(r.a)); super.set i),
+         inc = super.inc,
+         accesses = lambda _:Unit. !(r.a)};
+
+/* 18.11 Open Recursion and Evaluation */
+/* Unsuccessful attempt at creating instrCounter instances */
+newInstrCounter = 
+    lambda _:Unit. let r = {x=ref 1, a=ref 0} in
+        fix (instrCounterClass r);
+
+/* Uncomment the following to show instance creation never completes */
+/* ic = newInstrCounter unit; */
+
+/* Resolve with dummy lambda abstraction to suppress premature evaluation */
+setCounterClass =
+    lambda r:CounterRep.
+    lambda self: Unit->SetCounter.
+        lambda _:Unit.
+            {get = lambda _:Unit. !(r.x),
+             set = lambda i:Nat. r.x:=i,
+             inc = lambda _:Unit. (self unit).set(succ((self unit).get unit))};
+
+newSetCounter =
+    lambda _:Unit. let r = {x = ref 1} in
+        fix (setCounterClass r) unit;
+
+instrCounterClass =
+    lambda r:InstrCounterRep.
+    lambda self: Unit->InstrCounter.
+        lambda _:Unit.
+            let super = setCounterClass r self unit in
+                {get = super.get,
+                 set = lambda i:Nat. (r.a:=succ(!(r.a)); super.set i),
+                 inc = super.inc,
+                 accesses = lambda _:Unit. !(r.a)};
+
+newInstrCounter =
+    lambda _:Unit. let r = {x=ref 1, a=ref 0} in
+        fix (instrCounterClass r) unit;
+
+/* Now this works */
+ic = newInstrCounter unit;
+(ic.set 5; ic.accesses unit);
+(ic.inc unit; ic.get unit);
+ic.accesses unit;
