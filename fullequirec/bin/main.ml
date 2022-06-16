@@ -6,6 +6,7 @@
 *)
 
 open Format
+open String
 open Fullequirec.Support.Pervasive
 open Fullequirec.Support.Error
 open Fullequirec.Syntax
@@ -42,7 +43,24 @@ let openfile infile =
             with Sys_error m -> trynext rest
   in trynext !searchpath
 
-let parseFile inFile =
+let rec read_til_semi ?(prompt = " > ") () = 
+  print_string prompt;
+  print_flush();
+  let line = read_line() in
+    if ends_with ~suffix:";" line then
+      line
+    else
+      line ^ (read_til_semi ~prompt: "+> " ())
+
+let parseString str =
+  let lexbuf = Lexer.createFromStr str
+  in let result =
+    try Parser.toplevel Lexer.main lexbuf with Parsing.Parse_error -> 
+      print_endline "Parse Error"; print_flush(); fun ctx -> ([], ctx)
+in
+  Parsing.clear_parser(); result
+
+  let parseFile inFile =
   let pi = openfile inFile
   in let lexbuf = Lexer.create inFile pi
   in let result =
@@ -75,18 +93,25 @@ let prbindingty ctx b = match b with
        | Some(tyT) -> printty ctx tyT)
 
 let rec process_file f ctx =
-  if List.mem f (!alreadyImported) then
+  if (f = "repl") then
+    try (
+    let text = read_til_semi() in
+    let cmds,_ = parseString text ctx in
+      process_file "repl" (List.fold_left process_cmds ctx cmds))
+      with End_of_file -> print_endline ""; ctx
+      | _ -> process_file "repl" ctx;
+  else if List.mem f (!alreadyImported) then
     ctx
   else (
     alreadyImported := f :: !alreadyImported;
     let cmds,_ = parseFile f ctx in
-    let g ctx c =  
-      open_hvbox 0;
-      let results = process_command ctx c in
-      print_flush();
-      results
-    in
-      List.fold_left g ctx cmds)
+      List.fold_left process_cmds ctx cmds)
+
+and process_cmds ctx c =  
+  open_hvbox 0;
+  let results = process_command ctx c in
+  print_flush();
+  results
 
 and process_command ctx cmd = match cmd with
     Import(f) -> 
