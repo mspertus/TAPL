@@ -80,7 +80,7 @@ like `fullsimple`, and `Name` denotes the implementation name with leading capit
 
 ### Move the `.ml` files from their original location to the new project
 ```
-mv orig/main.ml NAME/bin/
+mv orig/main.ml name/bin/
 mv orig/*.ml* name/lib/
 mv test.f name
 ```
