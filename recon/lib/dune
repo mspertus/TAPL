@@ -1,0 +1,4 @@
+(library
+ (name recon))
+(ocamllex lexer)
+(ocamlyacc parser)
