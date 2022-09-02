@@ -111,6 +111,7 @@ and process_cmds (ctx,nextuvar,constr) c =
   open_hvbox 0;
   let results = process_command (ctx,nextuvar,constr) c in
   print_flush();
+  close_box ();
   results
 
 and process_command (ctx,nextuvar,constr) cmd = match cmd with
@@ -127,7 +128,8 @@ and process_command (ctx,nextuvar,constr) cmd = match cmd with
       pr ": ";
       open_hovbox 0;
       printty (applysubst constr'' tyT);
-      force_newline(); pr "foo";
+      close_box();
+      force_newline();
       (ctx, nextuvar', constr'')
   | Bind(fi,x,bind) -> 
        pr x; pr " "; prbinding ctx bind; force_newline();
