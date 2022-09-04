@@ -6,6 +6,7 @@
 *)
 
 open Format
+open String
 open Fullrecon.Support.Pervasive
 open Fullrecon.Support.Error
 open Fullrecon.Syntax
@@ -42,6 +43,41 @@ let openfile infile =
             with Sys_error m -> trynext rest
   in trynext !searchpath
 
+  let rec read_til_semi ?(prompt = " > ") () = 
+    print_string prompt;
+    print_flush();
+    let line = read_line() in
+      if ends_with ~suffix:";" line then
+        line
+      else
+        line ^ (read_til_semi ~prompt: "+> " ())
+
+  let parseString str =
+    let lexbuf = Lexer.createFromStr str
+    in let result =
+      try Parser.toplevel Lexer.main lexbuf with Parsing.Parse_error -> 
+        print_endline "Parse Error"; print_flush(); fun ctx -> ([], ctx)
+  in
+    Parsing.clear_parser(); result
+
+let rec read_til_semi ?(prompt = " > ") () = 
+  print_string prompt;
+  print_flush();
+  let line = read_line() in
+    if ends_with ~suffix:";" line then
+      line
+    else
+      line ^ (read_til_semi ~prompt: "+> " ())
+
+let parseString str =
+  let lexbuf = Lexer.createFromStr str
+  in let result =
+    try Parser.toplevel Lexer.main lexbuf with Parsing.Parse_error -> 
+      print_endline "Parse Error"; print_flush(); fun ctx -> ([], ctx)
+in
+  Parsing.clear_parser(); result
+
+
 let parseFile inFile =
   let pi = openfile inFile
   in let lexbuf = Lexer.create inFile pi
@@ -58,18 +94,26 @@ let prbindingty ctx b = match b with
   | VarBind(tyT) -> pr ": "; printty tyT 
 
 let rec process_file f (ctx,nextuvar,constr) =
-  if List.mem f (!alreadyImported) then
+  if (f = "repl") then
+    try (
+    let text = read_til_semi() in
+    let cmds,_ = parseString text ctx in
+      process_file "repl" (List.fold_left process_cmds (ctx,nextuvar,constr) cmds))
+      with End_of_file -> print_endline ""; (ctx,nextuvar,constr)
+      | _ -> process_file "repl" (ctx, nextuvar, constr);
+  else if List.mem f (!alreadyImported) then
     (ctx,nextuvar,constr)
   else (
     alreadyImported := f :: !alreadyImported;
     let cmds,_ = parseFile f ctx in
-    let g (ctx,nextuvar,constr) c =  
+      List.fold_left process_cmds (ctx,nextuvar,constr) cmds)
+    
+    and process_cmds (ctx,nextuvar,constr) c =  
       open_hvbox 0;
       let results = process_command (ctx,nextuvar,constr) c in
       print_flush();
+      close_box ();
       results
-    in
-      List.fold_left g (ctx,nextuvar,constr) cmds)
 
 and process_command (ctx,nextuvar,constr) cmd = match cmd with
     Import(f) -> 
@@ -85,6 +129,7 @@ and process_command (ctx,nextuvar,constr) cmd = match cmd with
       pr ": ";
       open_hovbox 0;
       printty (applysubst constr'' tyT);
+      close_box();
       force_newline();
       (ctx, nextuvar', constr'')
   | Bind(fi,x,bind) -> 
