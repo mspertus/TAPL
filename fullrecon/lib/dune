@@ -1,0 +1,4 @@
+(library
+ (name fullrecon))
+(ocamllex lexer)
+(ocamlyacc parser)
