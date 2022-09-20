@@ -1,0 +1,4 @@
+(executable
+ (public_name fullpoly)
+ (name main)
+ (libraries fullpoly))

@@ -1,0 +1,4 @@
+(library
+ (name fullpoly))
+(ocamllex lexer)
+(ocamlyacc parser)
