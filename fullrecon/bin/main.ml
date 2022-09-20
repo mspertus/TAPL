@@ -43,23 +43,6 @@ let openfile infile =
             with Sys_error m -> trynext rest
   in trynext !searchpath
 
-  let rec read_til_semi ?(prompt = " > ") () = 
-    print_string prompt;
-    print_flush();
-    let line = read_line() in
-      if ends_with ~suffix:";" line then
-        line
-      else
-        line ^ (read_til_semi ~prompt: "+> " ())
-
-  let parseString str =
-    let lexbuf = Lexer.createFromStr str
-    in let result =
-      try Parser.toplevel Lexer.main lexbuf with Parsing.Parse_error -> 
-        print_endline "Parse Error"; print_flush(); fun ctx -> ([], ctx)
-  in
-    Parsing.clear_parser(); result
-
 let rec read_til_semi ?(prompt = " > ") () = 
   print_string prompt;
   print_flush();
