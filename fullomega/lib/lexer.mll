@@ -101,6 +101,9 @@ and start    = ref 0
 and filename = ref ""
 and startLex = ref dummyinfo
 
+let createFromStr str =
+  lineno := 1; start := 0; Lexing.from_string str
+
 let create inFile stream =
   if not (Filename.is_implicit inFile) then filename := inFile
   else filename := Filename.concat (Sys.getcwd()) inFile;
