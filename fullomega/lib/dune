@@ -1,0 +1,4 @@
+(library
+ (name fullomega))
+(ocamllex lexer)
+(ocamlyacc parser)

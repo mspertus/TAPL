@@ -1,0 +1,4 @@
+(executable
+ (public_name fullomega)
+ (name main)
+ (libraries fullomega))
