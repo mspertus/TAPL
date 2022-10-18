@@ -1,0 +1,4 @@
+(executable
+ (public_name fullfomsub)
+ (name main)
+ (libraries fullfomsub))

@@ -1,0 +1,4 @@
+(library
+ (name fullfomsub))
+(ocamllex lexer)
+(ocamlyacc parser)
