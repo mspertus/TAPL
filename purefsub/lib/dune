@@ -1,0 +1,4 @@
+(library
+ (name purefsub))
+(ocamllex lexer)
+(ocamlyacc parser)

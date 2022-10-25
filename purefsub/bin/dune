@@ -1,0 +1,4 @@
+(executable
+ (public_name purefsub)
+ (name main)
+ (libraries purefsub))
