@@ -1,0 +1,4 @@
+(library
+ (name fomsub))
+(ocamllex lexer)
+(ocamlyacc parser)
