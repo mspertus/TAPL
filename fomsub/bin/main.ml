@@ -6,6 +6,7 @@
 *)
 
 open Format
+open String
 open Fomsub.Support.Pervasive
 open Fomsub.Support.Error
 open Fomsub.Syntax
@@ -32,6 +33,23 @@ let parseArgs () =
       None -> err "You must specify an input file"
     | Some(s) -> s
 
+let rec read_til_semi ?(prompt = " > ") () = 
+  print_string prompt;
+  print_flush();
+  let line = read_line() in
+    if ends_with ~suffix:";" line then
+      line
+    else
+      line ^ (read_til_semi ~prompt: "+> " ())
+
+let parseString str =
+  let lexbuf = Lexer.createFromStr str
+  in let result =
+    try Parser.toplevel Lexer.main lexbuf with Parsing.Parse_error -> 
+      print_endline "Parse Error"; print_flush(); fun ctx -> ([], ctx)
+in
+  Parsing.clear_parser(); result
+    
 let openfile infile = 
   let rec trynext l = match l with
         [] -> err ("Could not find " ^ infile)
@@ -58,18 +76,27 @@ let prbindingty ctx b = match b with
   | TyVarBind(tyS) -> pr "<: ";printty ctx tyS
 
 let rec process_file f ctx =
-  if List.mem f (!alreadyImported) then
-    ctx
+  if (f = "repl") then
+    try (
+    let text = read_til_semi() in
+    let cmds,_ = parseString text ctx in
+      process_file "repl" (List.fold_left process_cmds ctx cmds))
+      with End_of_file -> print_endline ""; ctx
+      | _ -> process_file "repl" ctx;
+  else if List.mem f (!alreadyImported) then
+      ctx
   else (
     alreadyImported := f :: !alreadyImported;
-    let cmds,_ = parseFile f ctx in
-    let g ctx c =  
+    let cmds,_ = parseFile f ctx
+    in 
+      List.fold_left process_cmds ctx cmds)
+
+    and process_cmds ctx c = 
       open_hvbox 0;
       let results = process_command ctx c in
       print_flush();
+      close_box();
       results
-    in
-      List.fold_left g ctx cmds)
 
 and process_command ctx cmd = match cmd with
     Import(f) -> 
