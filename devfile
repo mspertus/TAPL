@@ -1,0 +1,18 @@
+schemaVersion: 2.0.0
+metadata:
+  name: aws-universal
+  version: 1.0.1
+  displayName: Ocaml
+  description: Stack with Ocaml Tooling
+  projectType: aws
+components:
+  - name: ocaml-runtime
+    container:
+      image: public.ecr.aws/w9u4a6r8/ocaml:latest
+      mountSources: true
+      volumeMounts:
+        - name: docker-store
+          path: /var/lib/docker
+  - name: docker-store
+    volume:
+      size: 16Gi
