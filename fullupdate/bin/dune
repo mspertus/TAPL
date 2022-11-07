@@ -1,0 +1,4 @@
+(executable
+ (public_name fullupdate)
+ (name main)
+ (libraries fullupdate))
