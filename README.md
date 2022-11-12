@@ -9,10 +9,14 @@ There will eventually be one directory for each implementation at https://www.ci
 ## Usage
 Go into the directory for the implementation (e.g., `arith`) and build
 
-```dune build . --profile release```
+```
+dune build . --profile release
+```
 
 Run the supplied tests 
-```dune exec arith test.f```
+```
+dune exec arith test.f --profile release
+```
 
 Run the REPL
 ```
