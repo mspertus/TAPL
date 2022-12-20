@@ -6,6 +6,13 @@ and reorganize them as Dune projects.
 There is one directory for each implementation at https://www.cis.upenn.edu/~bcpierce/tapl/. Be sure
 to change into that directory before running the below commands.
 
+## Prerequisites
+The usage instructions below assume you have installed both ocaml and dune 3. You can either 
+**Option 1:** Install them on your local computer. I followed the instructions [here](https://ocaml.org/docs/up-and-running)) 
+**Option 2:** Launch a preconfigured development using the [devfile](https://devfile.io/) in the repo. I use [CodeCatalyst](codecatalyst.aws/),
+which has built-in support for creating cloud-hosted development environments from devfiles. See [Running in CodeCatalyst](#running-in-codecatalyst) below for
+instructions.
+
 ## Usage
 Go into the directory for the implementation (e.g., `arith`) and build
 
@@ -112,3 +119,4 @@ Build and test to confirm everything is good to go
 dune build . --profile release
 dune exec name test.f --profile release
 ```
+## Running in CodeCatalyst
