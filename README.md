@@ -75,6 +75,9 @@ scc = lambda n. lambda s. lambda z. s (n s z)
 2
 ```
 
+# Appendices
+## Running in CodeCatalyst
+
 ## Turning an implementation into a dune project
 **Warning: This section can safely be ignored. I have already performed these steps in the repo.**
 However, in case it is useful as a reference, here are the steps due to Jordan Merrick (thanks!) that
@@ -119,4 +122,3 @@ Build and test to confirm everything is good to go
 dune build . --profile release
 dune exec name test.f --profile release
 ```
-## Running in CodeCatalyst
