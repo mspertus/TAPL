@@ -8,7 +8,7 @@ to change into that directory before running the below commands.
 
 ## Prerequisites
 The usage instructions below assume you have installed both ocaml and dune 3. You can either 
-**Option 1:** Install them on your local computer. I followed the instructions [here](https://ocaml.org/docs/up-and-running)) 
+**Option 1:** Install them on your local computer. I followed the instructions [here](https://ocaml.org/docs/up-and-running)
 **Option 2:** Launch a preconfigured development using the [devfile](https://devfile.io/) in the repo. I use [CodeCatalyst](codecatalyst.aws/),
 which has built-in support for creating cloud-hosted development environments from devfiles. See [Running in CodeCatalyst](#running-in-codecatalyst) below for
 instructions.
@@ -77,8 +77,69 @@ scc = lambda n. lambda s. lambda z. s (n s z)
 
 # Appendices
 ## Running in CodeCatalyst
+Although the [Usage](#usage) directions above should work on any machine with OCaml and Dune 3 installed
+(e.g., by the directions [here](https://ocaml.org/docs/up-and-running)), setting up your machine with
+can be a surprising amount of work, so the repo include a [devfile](https://devfile.io/) for
+a preconfigured development environment that you can start using right away. The 
+[devfile application developer page](https://devfile.io/docs/2.2.0/application-developer) lists
+a number of development tools that support devfiles. 
 
-## Turning an implementation into a dune project
+In case it is useful, here are the steps I follow with 
+[CodeCatalyst](https://codecatalyst.aws), a development tool that can create
+cloud-hosted development environments from devfiles among other capabilities
+(note: I am a member of the CodeCatalyst team).
+
+### Step 1: Create a CodeCatalyst account
+Go to [this page](https://codecatalyst.aws/explore) to create an account
+and follow the steps there. Note that
+while you will need to provide an AWS account that is used for billing
+ purposes, the free tier provides 60 hours/month of devfile usage.
+
+### Step 2: Create an empty project
+Once you are logged in, hit "Create Project"
+
+![create project screenshot](readme_images/step1.png)
+
+We are going to start from an empty project, so choose Start from scratch, name
+your project, and hit Create Project.
+![start from scratch screenshot](readme_images/step2.png)
+
+### Step 3: Put the code in your repo
+CodeCatalyst does not support running devfiles from GitHub repos at
+this time, so we will copy the code in a CodeCatalyst repo.
+
+Go to Code/Source Repository and create a repo
+![create repo screenshot](readme_images/step3.jpg)
+
+Once you create it, you should be able to choose Clone repo to get a URL
+and Personal Access Token password
+![clone credentials screenshot](readme_images/step4.5.jpg)
+In a command shell, move the code into the repo by running
+
+```bash
+git clone --mirror https://github.com/mspertus/TAPL.git
+cd TAPL.git
+git push -f --mirror url-for-codecatalyst-repo
+```
+
+### Step 4: Create your development environment
+Go to Code/Dev Environments, and create a Development Environment.
+I will create a Cloud9 environment, but you can create VSCode, and
+JetBrains environments as well (Note that for Jetbrains, you need
+the ultimate version to connect to remote development environments)
+
+![create dev environment screenshot](readme_images/step4.jpg)
+
+### Step 5+: Use the implementations
+When the environment opens (the first time is a bit slow), all of the
+[Usage](#usage) commands should just work, and you should be able to
+view, edit, and commit the source code that implements them.
+
+**Note:** Now that you have created your project and development environment,
+you do not need to repeat steps 1-4 in the future. Just open your development
+environment. 
+![use dev environment screenshot](readme_images/step5.jpg)
+## How I turned the implementations into a dune projects
 **Warning: This section can safely be ignored. I have already performed these steps in the repo.**
 However, in case it is useful as a reference, here are the steps due to Jordan Merrick (thanks!) that
 I follow to change the implementations on the book website to Dune projects (this
