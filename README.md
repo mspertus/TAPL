@@ -139,7 +139,7 @@ view, edit, and commit the source code that implements them.
 you do not need to repeat steps 1-4 in the future. Just open your development
 environment. 
 ![use dev environment screenshot](readme_images/step5.jpg)
-## How I turned the implementations into a dune projects
+## How I turned the implementations into dune projects
 **Warning: This section can safely be ignored. I have already performed these steps in the repo.**
 However, in case it is useful as a reference, here are the steps due to Jordan Merrick (thanks!) that
 I follow to change the implementations on the book website to Dune projects (this
