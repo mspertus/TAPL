@@ -78,8 +78,8 @@ scc = lambda n. lambda s. lambda z. s (n s z)
 # Appendices
 ## Running in CodeCatalyst
 Although the [Usage](#usage) directions above should work on any machine with OCaml and Dune 3 installed
-(e.g., by the directions [here](https://ocaml.org/docs/up-and-running)), setting up your machine with
-can be a surprising amount of work, so the repo include a [devfile](https://devfile.io/) for
+(e.g., by the directions [here](https://ocaml.org/docs/up-and-running)), setting up your machine with such
+prerequisites properly configured can be a surprising amount of work, so the repo includes a [devfile](https://devfile.io/) for
 a preconfigured development environment that you can start using right away. The 
 [devfile application developer page](https://devfile.io/docs/2.2.0/application-developer) lists
 a number of development tools that support devfiles. 
