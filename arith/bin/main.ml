@@ -7,7 +7,6 @@
 
 open Format
 open String
-open Arith.Support.Pervasive
 open Arith.Support.Error
 open Arith.Syntax
 open Arith.Core
@@ -40,7 +39,7 @@ let openfile infile =
       | (d::rest) -> 
           let name = if d = "" then infile else (d ^ "/" ^ infile) in
           try open_in name
-            with Sys_error m -> trynext rest
+            with Sys_error _ -> trynext rest
   in trynext !searchpath
 
 let parseFile inFile =
@@ -95,7 +94,7 @@ and process_cmds  c =
 and process_command  cmd = match cmd with
     Import(f) -> 
       process_file f 
-  | Eval(fi,t) -> 
+  | Eval(_,t) -> 
       let t' = eval t in
       printtm_ATerm true t'; 
       force_newline();

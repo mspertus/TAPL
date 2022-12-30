@@ -1,7 +1,5 @@
-open Format
 open Syntax
 open Support.Error
-open Support.Pervasive
 
 (* ------------------------   EVALUATION  ------------------------ *)
 
@@ -12,16 +10,10 @@ let rec isnumericval t = match t with
   | TmSucc(_,t1) -> isnumericval t1
   | _ -> false
 
-let rec isval t = match t with
-    TmTrue(_)  -> true
-  | TmFalse(_) -> true
-  | t when isnumericval t  -> true
-  | _ -> false
-
 let rec eval1 t = match t with
-    TmIf(_,TmTrue(_),t2,t3) ->
+    TmIf(_,TmTrue(_),t2,_) ->
       t2
-  | TmIf(_,TmFalse(_),t2,t3) ->
+  | TmIf(_,TmFalse(_),_,t3) ->
       t3
   | TmIf(fi,t1,t2,t3) ->
       let t1' = eval1 t1 in

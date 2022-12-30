@@ -9,6 +9,10 @@
 
 module Pervasive : sig
   val pr : string -> unit
+  val obox: unit -> unit
+   val obox0: unit -> unit
+   val cbox: unit -> unit
+   val break: unit -> unit
 end  
 
 (* ------------------------------------------------------------------------ *)
