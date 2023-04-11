@@ -95,32 +95,23 @@ and follow the steps there. Note that
 while you will need to provide an AWS account that is used for billing
  purposes, the free tier provides 60 hours/month of devfile usage.
 
-### Step 2: Create an empty project
+### Step 2: For this repository into your own GitHub account
+The remaining steps require that you have your own fork of this project. Click the "Fork" dropdown and choose "Create a new fork"
+![fork github screenshot](readme_images/fork.jpg)
+
+### Step 3: Create a "Bring your own code"  project
 Once you are logged in, hit "Create Project"
 
-![create project screenshot](readme_images/step1.png)
+![create project screenshot](readme_images/create1.png)
 
-We are going to start from an empty project, so choose Start from scratch, name
-your project, and hit Create Project.
-![start from scratch screenshot](readme_images/step2.png)
 
-### Step 3: Put the code in your repo
-CodeCatalyst does not support running devfiles from GitHub repos at
-this time, so we will copy the code in a CodeCatalyst repo.
+We are going to start from a "Bring your own code" project, so choose "Bring your own code"
+![start from scratch screenshot](readme_images/create2.jpg)
 
-Go to Code/Source Repository and create a repo
-![create repo screenshot](readme_images/step3.jpg)
+CodeCatalyst will walk you through the steps to connect to GitHub if necessary and then ask you
+to link your repo. Choose the fork you just created in your account.
+![link to github repo  screenshot](readme_images/link.jpg)
 
-Once you create it, you should be able to choose Clone repo to get a URL
-and Personal Access Token password
-![clone credentials screenshot](readme_images/step4.5.jpg)
-In a command shell, move the code into the repo by running
-
-```bash
-git clone --mirror https://github.com/mspertus/TAPL.git
-cd TAPL.git
-git push -f --mirror url-for-codecatalyst-repo
-```
 
 ### Step 4: Create your development environment
 Go to Code/Dev Environments, and create a Development Environment.
